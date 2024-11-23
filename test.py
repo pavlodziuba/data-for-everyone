@@ -17,7 +17,7 @@ openai.api_key = os.getenv('OpenAI_KEY')
 error_count = 0
 
 
-def create_and_run_python_file(code):
+def create_and_run_python_file(code, user_prompt):
     global error_count
     buffer = io.StringIO()
     original_stdout = sys.stdout
@@ -32,7 +32,7 @@ def create_and_run_python_file(code):
             print("There is a critical error")
         else:
             # Call run_all again if there are fewer than 5 errors
-            run_all()
+            run_all(user_prompt)
     finally:
         # Restore the original stdout
         sys.stdout = original_stdout
@@ -77,8 +77,8 @@ def get_chatgpt_response(prompt):
         ]
     )
     return response["choices"][0]["message"]["content"]
-def run_all():
-    user_prompt = sys.argv[1]
+def run_all(user_prompt):
+    #user_prompt = sys.argv[1]
     print("\nSending follow-up prompt to ChatGPT...")
     analysis = get_chatgpt_response(user_prompt)
 
@@ -92,7 +92,7 @@ def run_all():
     print("\n\n\n\n\n\n\n\n\n\nNow try run code:\n")
     if len(my_wb_code) < 10:
         my_wb_code = analysis
-    finall_message = create_and_run_python_file(my_wb_code)
+    finall_message = create_and_run_python_file(my_wb_code, user_prompt)
 
     return finall_message
 
