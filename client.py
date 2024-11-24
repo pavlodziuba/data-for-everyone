@@ -2,6 +2,58 @@ import requests
 
 url = "http://127.0.0.1:5000/process"
 
+advanced_slovakia_questions = [
+    # Advanced Economic Questions
+    "What is the current inflation rate in Slovakia, and how has it changed over the last 5 years?",
+    "What are the key factors contributing to Slovakia’s trade balance, and how has it evolved in the past decade?",
+    "What is Slovakia's public debt as a percentage of GDP, and how does it compare to the EU average?",
+    "How much foreign direct investment (FDI) has Slovakia attracted in the past 5 years, and which sectors have seen the most investment?",
+    "What is the unemployment rate among highly educated workers in Slovakia, and how does it compare to other EU countries?",
+    "What is Slovakia's current account balance, and what impact does it have on the country’s economic stability?",
+
+    # Health and Social Development
+    "What is the impact of Slovakia’s healthcare system on the overall life expectancy and infant mortality rates compared to other EU countries?",
+    "What are the socio-economic determinants of health in Slovakia, and how do they affect different population groups (e.g., rural vs urban, men vs women)?",
+    "What is the rate of chronic diseases (e.g., diabetes, heart disease) in Slovakia, and what policies are in place to address them?",
+    "How does Slovakia's mental health care system compare to other EU countries in terms of access, affordability, and quality?",
+    "What is the prevalence of non-communicable diseases in Slovakia, and how does it impact the country's healthcare expenditures?",
+
+    # Environmental and Sustainability Questions
+    "How does Slovakia’s carbon footprint compare to other Central European countries, and what steps is it taking to meet EU climate targets?",
+    "What is the current rate of biodiversity loss in Slovakia, and what policies are being implemented to protect endangered species and ecosystems?",
+    "What percentage of Slovakia’s agricultural land is dedicated to organic farming, and how does this compare to the EU average?",
+    "What is the state of Slovakia’s water resources in terms of availability, quality, and usage, and what challenges does the country face in water management?",
+    "How is Slovakia addressing waste management and recycling, and what percentage of its waste is currently being recycled?",
+
+    # Education and Innovation
+    "How does Slovakia rank in terms of educational outcomes (e.g., PISA scores) compared to other EU countries?",
+    "What is the gap in educational attainment between urban and rural areas in Slovakia, and what policies are being implemented to address it?",
+    "What is the current state of research and development (R&D) in Slovakia, and how does it compare to other EU countries in terms of investment and output?",
+    "How many Slovak students pursue higher education abroad, and what are the key factors influencing this trend?",
+    "What is Slovakia's position in the global innovation index, and what initiatives are driving technological development in the country?",
+
+    # Poverty and Inequality
+    "What is the poverty gap in Slovakia, and how does it compare to other EU countries in terms of income inequality?",
+    "How has Slovakia’s wealth distribution changed over the last 20 years, and what are the key factors contributing to this shift?",
+    "What are the living conditions of the Roma population in Slovakia, and what government policies exist to improve their social inclusion?",
+    "What is the rate of child poverty in Slovakia, and what social programs are in place to address it?",
+    "How does Slovakia’s income inequality (measured by the Gini coefficient) compare to other EU countries, and what has been the trend in recent years?",
+
+    # International Relations and Global Influence
+    "What role does Slovakia play in the European Union's foreign policy, and how has its position evolved in the context of recent global geopolitical changes?",
+    "How does Slovakia’s participation in international trade agreements (e.g., EU, WTO) impact its economic performance and growth?",
+    "What is Slovakia's foreign aid contribution, and how does it compare to other EU countries in terms of per capita donations?",
+    "What are Slovakia's key partnerships in Central Europe, and how do these partnerships influence its regional and global standing?",
+    "How does Slovakia’s membership in NATO affect its defense policy and international relations with neighboring countries?",
+
+    # Technology and Digitalization
+    "How is Slovakia adopting digital technologies in public services, and what is the level of digital literacy across different age groups?",
+    "What percentage of Slovak businesses are engaged in e-commerce, and how does this compare to the EU average?",
+    "What is the state of 5G network development in Slovakia, and how is it expected to impact economic and social development in the coming years?",
+    "How does Slovakia rank in terms of cybersecurity preparedness, and what are the main challenges the country faces in securing its digital infrastructure?",
+    "What initiatives are being implemented to promote the digitalization of Slovakia’s education system, and how effective have these efforts been?"
+]
+
 
 slovakia_questions = [
     # Population and Demographics
@@ -32,12 +84,7 @@ slovakia_questions = [
     "What percentage of government spending in Slovakia goes to education?",
     "What’s the literacy rate for women in Slovakia compared to men?",
 
-    # Environment
-    "How much of Slovakia is covered by forests?",
-    "What’s the carbon dioxide emission per person in Slovakia?",
-    "What percentage of energy in Slovakia comes from renewable sources?",
-    "How much freshwater is available per person in Slovakia?",
-    "What’s the air quality index in Slovakia or major cities?",
+
 
     # Poverty and Inequality
     "What percentage of people in Slovakia live below the poverty line?",
@@ -54,7 +101,7 @@ slovakia_questions = [
     "How is Slovakia performing in terms of adopting renewable energy?"
 ]
 
-for question in slovakia_questions:
+for question in advanced_slovakia_questions:
     data = {"message": question}
 
     # Send the POST request
@@ -62,9 +109,11 @@ for question in slovakia_questions:
 
     # Print the question
     print('The question is: ' + data["message"])
-
+    max_attempts = 10
+    attempt_count = 0
     # Check for critical errors and resend the request if necessary
-    while "critical error" in response.text.lower():
+    while "critical error" in response.text.lower() and attempt_count < max_attempts:
+        attempt_count += 1
         response = requests.post(url, json=data)
 
     print(response.json())
